@@ -34,6 +34,33 @@ router.get('/tickets:id', (req, res, next) => {
             })
         }
     })
+});
+
+router.post('/tickets', (req, res, next) => {
+    // userID is taken from then tocken when the user logs in
+
+    //left outer join using lookup of the users
+
+    //issue of populating 
+
+    // .. id from the request object for now
+    const userId = req.userId;
+    const newTicket = new Ticket({
+        userId: userId,
+        dateCreated: req.body.dateCreated,
+        // status
+        // priority
+        // tags
+        title: req.body.title,
+        description: req.body.description,
+        // attachment
+    }).save()
+    .then(data => {
+        res.status(200).json({
+            "message": "new ticket created",
+            ticket: data
+        })
+    })
 })
 
 

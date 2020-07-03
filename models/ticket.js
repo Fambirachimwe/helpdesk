@@ -35,7 +35,7 @@ TicketSchema.methods.updateStatus = async (status) => {
 }
 
 
-Ticket.methods.updatePriority = async (priority) => {
+TicketSchema.methods.updatePriority = async (priority) => {
     const prId = async () => {
         Priority. find({name: priority }).then(data => {
             return data._id;
