@@ -3,9 +3,18 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const mongoose = require('mongoose');
+
 
 
 //mongoose connection string here 
+mongoose.connect('mongodb://localhost:27017/helpdesk', {useNewUrlParser: true});
+
+mongoose.connection.once('open', () =>{
+  console.log('connected');
+}).on('error', (error) =>{
+  console.log('connection error ', error);
+});
 
 
 // handling static folders and files
