@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 const UserSchema = new Schema({
-    empId : {type: mongoose.Schema.Types.ObjectId, ref: "Employee"},
+    // empId : {type: mongoose.Schema.Types.ObjectId, ref: "Employee"},
     username: String,
 
     email: {
@@ -14,7 +14,7 @@ const UserSchema = new Schema({
     },
 
     password: {type: String , required: true},
-    role: {type: mongoose.Schema.Types.ObjectId, ref: 'Role'}
+    // role: {type: mongoose.Schema.Types.ObjectId, ref: 'Role'}
     
     
 });
