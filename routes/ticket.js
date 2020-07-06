@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
 
+STATUS = ['PENDING','CLOSED','OPENED','ELEVATED','UNRESOLVED']
 
 //get all
 //post
@@ -21,25 +22,33 @@ router.get('/tickets', (req, res, next) => {
     })
 });
 
-router.get('/tickets:id', (req, res, next) => {
-    const id = req.params.id;
-    Ticket.findById(id).then(data => {
-        if(data){
-            res.status(200).json({
-                data
-            })
-        } else {
-            res.status(200).json({
-                "message": "ticket not found"
-            })
-        }
+router.get('/tickets/:id/:statusId?', (req, res, next) => {
+    const {id,statusId }  = req.params
+
+
+
+    Ticket.findOneAndUpdate({ _id : id},{ $set : { status : STATUS[statusId] } },(ticket) => {
+        if(!ticket)  res.sendStatus(400)
     })
+
+
+    // Ticket.findById(id).then(data => {
+    //     if(data){
+    //         res.status(200).json({
+    //             data
+    //         })
+    //     } else {
+    //         res.status(200).json({
+    //             "message": "ticket not found"
+    //         })
+    //     }
+    // })
 });
 
 router.post('/tickets', (req, res, next) => {
     // userID is taken from then tocken when the user logs in
 
-    //left outer join using lookup of the users
+    
 
     //issue of populating 
 
