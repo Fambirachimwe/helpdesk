@@ -5,11 +5,11 @@ const Priority = require('./priority');
 
 
 const TicketSchema = new Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId },
+    user: { type: mongoose.Schema.Types.ObjectId },
     dateCreated: { type: Date, default: Date.now },
-    status: { type: mongoose.Schema.Types.ObjectId, default: "pending", ref: "Status" }, ///
-    priority: { type: mongoose.Schema.Types.ObjectId, default: 'low', ref: "Priority" }, ///
-    tags: [String],
+    // status: { type: mongoose.Schema.Types.ObjectId, default: "pending", ref: "Status" }, ///
+    // priority: { type: mongoose.Schema.Types.ObjectId, default: 'low', ref: "Priority" }, ///
+    // tags: [String],
     title: String,
     description: String,
     attachment: { data: Buffer, contentType: String }

@@ -9,11 +9,19 @@
   "author": "tatenda fambirachimwe",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+<<<<<<< HEAD
+=======
+    "nodemon": "^2.0.4",
+    "passport": "^0.4.1",
+>>>>>>> 30ad12ac5176555e5d7eb116f2f2413c1133c113
     "passport-jwt": "^4.0.0"
   }
 }

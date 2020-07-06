@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
+const CheckAuth = require('../middleware/checkAuth');
 
-STATUS = ['PENDING','CLOSED','OPENED','ELEVATED','UNRESOLVED']
+// STATUS = ['PENDING','CLOSED','OPENED','ELEVATED','UNRESOLVED']
 
 //get all
 //post
 // get by id
 
-router.get('/tickets', (req, res, next) => {
+router.get('/tickets', CheckAuth, (req, res, next) => {
     Ticket.find().then(data => {
         if(data.length > 0){
             res.status(200).json({
@@ -22,40 +23,27 @@ router.get('/tickets', (req, res, next) => {
     })
 });
 
-router.get('/tickets/:id/:statusId?', (req, res, next) => {
-    const {id,statusId }  = req.params
-
-
-
-    Ticket.findOneAndUpdate({ _id : id},{ $set : { status : STATUS[statusId] } },(ticket) => {
-        if(!ticket)  res.sendStatus(400)
+router.get('/tickets/:id', CheckAuth, (req, res, next) => {
+    const id = req.params.id;
+    Ticket.findById(id).then(data => {
+        if(data){
+            res.status(200).json({
+                data
+            })
+        } else {
+            res.status(200).json({
+                "message": "ticket not found"
+            })
+        }
     })
 
-
-    // Ticket.findById(id).then(data => {
-    //     if(data){
-    //         res.status(200).json({
-    //             data
-    //         })
-    //     } else {
-    //         res.status(200).json({
-    //             "message": "ticket not found"
-    //         })
-    //     }
-    // })
 });
 
-router.post('/tickets', (req, res, next) => {
-    // userID is taken from then tocken when the user logs in
-
+router.post('/tickets',CheckAuth, (req, res, next) => {
     
-
-    //issue of populating 
-
-    // .. id from the request object for now
-    const userId = req.userId;
+    const userId = req.user.id;
     const newTicket = new Ticket({
-        userId: userId,
+        user: userId,
         dateCreated: req.body.dateCreated,
         // status
         // priority
