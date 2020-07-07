@@ -23,25 +23,42 @@ mongoose.connection.once('open', () =>{
 });
 
 
+// HANDLING CORS ERRORS
+// CROSS ORIGIN RESOURCE SHARING 
+app.use((req, res, next) =>{
+  res.header('Access-Control-Allow-Origin', '*'); // the * allows all site to access the
+  res.header(
+      'Access-Control-Allow-Headers', 
+      'Origin X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  if(req.method === 'OPTIONS'){
+      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATHCH, DELETE, GET');
+      return res.status(200).json({});
+  }
+  next();
+});
 
 
 
-// handling static folders and files
-app.use(multer({ dest: './uploads/',
-    rename: function (fieldname, filename) {
-      return filename;
-    },
-}));
 
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname)
+  }
+});
 
+const upload = multer({
+  storage: storage,
+  limits: {fileSize: 1024 * 1024* 1024}
+});
 // test route to  post the image of attachment
 
-// app.post('/api/photo', function(req,res){
-//     var newItem = new Item();
-//     newItem.img.data = fs.readFileSync(req.files.userPhoto.path)
-//     newItem.img.contentType = 'image/png';
-//     newItem.save();
-// });
+app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
+  console.log(req)
+});
 
 
 
@@ -50,6 +67,8 @@ app.use(multer({ dest: './uploads/',
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use(__dirname + '/uploads', express.static('uploads'));
 
 
 // routes

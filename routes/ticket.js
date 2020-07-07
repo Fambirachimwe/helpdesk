@@ -2,21 +2,31 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
 const CheckAuth = require('../middleware/checkAuth');
-const {STATUS} = require('../util/constants');
+const multer = require('multer');
+const { STATUS } = require('../util/constants');
 
-// STATUS = ['PENDING','CLOSED','OPENED','ELEVATED','UNRESOLVED']
 
-//get all
-//post
-// get by id
+// multer middleware
+// const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        console.log(file)
+        cb(null, file.originalname)
+    }
+})
 
+
+// get ticket pool
 router.get('/tickets', CheckAuth, (req, res, next) => {
     Ticket.find().then(data => {
-        if(data.length > 0){
+        if (data.length > 0) {
             res.status(200).json({
                 tickets: data // returning the all tickets onject
             });
-        } else{
+        } else {
             res.status(200).json({
                 "message": "No tickets Available"
             })
@@ -24,10 +34,12 @@ router.get('/tickets', CheckAuth, (req, res, next) => {
     })
 });
 
+
+// get ticket by Id
 router.get('/tickets/:id', CheckAuth, (req, res, next) => {
     const id = req.params.id;
     Ticket.findById(id).then(data => {
-        if(data){
+        if (data) {
             res.status(200).json({
                 data
             })
@@ -40,26 +52,34 @@ router.get('/tickets/:id', CheckAuth, (req, res, next) => {
 
 });
 
-router.post('/tickets',CheckAuth, (req, res, next) => {
+// user create ticker
+router.post('/tickets', CheckAuth, (req, res, next) => {
+    const upload = multer({ storage: storage }).single('attachment');
+    upload(req, res, function (err) {
+        if (err) {
+            console.log(res.send(err))
+        }
 
-    const userId = req.user.id;
-    const newTicket = new Ticket({
-        user: userId,
-        dateCreated: req.body.dateCreated,
-        // status
-        // priority
-        // tags
-        title: req.body.title,
-        description: req.body.description,
-        // attachment
-    }).save()
-    .then(data => {
-        res.status(200).json({
-            "message": "new ticket created",
-            ticket: data
-        })
-    })
-})
+        const userId = req.user.id;
+        const newTicket = new Ticket({
+            user: userId,
+            dateCreated: req.body.dateCreated,
+            // status
+            // priority
+            // tags
+            title: req.body.title,
+            description: req.body.description,
+            attachment: req.file.path
+        }).save()
+            .then(data => {
+                res.status(200).json({
+                    "message": "new ticket created",
+                    ticket: data
+                });
+            });
+    });
+
+});
 
 
 module.exports = router
