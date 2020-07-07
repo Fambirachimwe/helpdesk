@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 
 const CheckAuth = (req, res, next) => {
-    const token = req.headers['token'] || req.body.token;
+    const token = req.headers['token'] || req.body.token;   // store this token to the frontend 
     // console.log(token);
 
     if(!token) return res.status(401).send('User not authorised');

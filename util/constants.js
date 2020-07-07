@@ -1,0 +1,7 @@
+exports.STATUS = {
+    PENDING: "PENDING",
+    CLOSED:'CLOSED',
+    ELEVATED: "ELEVATED",
+    UNRESOLVED: "UNRESOLVED"
+}
+

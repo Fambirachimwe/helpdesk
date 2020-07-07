@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
 const CheckAuth = require('../middleware/checkAuth');
+const {STATUS} = require('../util/constants');
 
 // STATUS = ['PENDING','CLOSED','OPENED','ELEVATED','UNRESOLVED']
 
@@ -40,7 +41,7 @@ router.get('/tickets/:id', CheckAuth, (req, res, next) => {
 });
 
 router.post('/tickets',CheckAuth, (req, res, next) => {
-    
+
     const userId = req.user.id;
     const newTicket = new Ticket({
         user: userId,
