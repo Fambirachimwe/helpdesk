@@ -6,11 +6,14 @@ const multer = require('multer');
 const { STATUS } = require('../util/constants');
 
 
+
+
 // multer middleware
 // const multer = require('multer')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, 'uploads/')
+
     },
     filename: function (req, file, cb) {
         console.log(file)
@@ -18,6 +21,10 @@ const storage = multer.diskStorage({
     }
 })
 
+//  this is the comment or the live server extesion 
+
+
+// mhata wadii ... 
 
 // get ticket pool
 router.get('/tickets', CheckAuth, (req, res, next) => {

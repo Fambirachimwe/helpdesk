@@ -55,6 +55,10 @@ const upload = multer({
   limits: {fileSize: 1024 * 1024* 1024}
 });
 // test route to  post the image of attachment
+// middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
   console.log(req)
@@ -63,10 +67,6 @@ app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
 
 
 
-// middlewares
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 
 app.use(__dirname + '/uploads', express.static('uploads'));
 
