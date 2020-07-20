@@ -61,7 +61,7 @@ router.post('/login' ,(req, res, next) => {
                     // console.log(req.headers); ///
 
                     return res.status(200).json({
-                        message: "user logged in",
+                        message: "loggedIn",
                         token,  // sending the token to the frontend 
                     });
                 } else {
