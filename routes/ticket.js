@@ -35,6 +35,7 @@ router.get('/tickets', CheckAuth, (req, res, next) => {
 });
 
 
+
 // get ticket by Id
 router.get('/tickets/:id', CheckAuth, (req, res, next) => {
     const id = req.params.id;
@@ -52,32 +53,50 @@ router.get('/tickets/:id', CheckAuth, (req, res, next) => {
 
 });
 
-// user create ticker
-router.post('/tickets', CheckAuth, (req, res, next) => {
-    const upload = multer({ storage: storage }).single('attachment');
-    upload(req, res, function (err) {
-        if (err) {
-            console.log(res.send(err))
-        }
 
-        const userId = req.user.id;
-        const newTicket = new Ticket({
-            user: userId,
-            dateCreated: req.body.dateCreated,
-            // status
-            // priority
-            // tags
-            title: req.body.title,
-            description: req.body.description,
-            attachment: req.file.path
-        }).save()
-            .then(data => {
-                res.status(200).json({
-                    "message": "new ticket created",
-                    ticket: data
-                });
-            });
-    });
+// user create ticket
+router.post('/tickets', CheckAuth, (req, res, next) => {
+    // console.log(req.body)
+
+    const {title, description} = req.body;
+    const usetId = req.user.id;
+    const newTicket = new Ticket({
+        user: usetId,
+        title: title,
+        description: description
+    }).save()
+    .then(data => {
+        res.status(200).json({
+            data
+        })
+    })
+
+    // console.log(req.file);
+    // const upload = multer({ storage: storage }).single('attachment');
+    // upload(req, res, function (err) {
+    //     console.log(req.file);
+    //     // if (err) {
+    //     //     console.log(res.send(err))
+    //     // }
+
+    //     // const userId = req.user.id;
+    //     // const newTicket = new Ticket({
+    //     //     user: userId,
+    //     //     dateCreated: req.body.dateCreated,
+    //     //     // status
+    //     //     // priority
+    //     //     // tags
+    //     //     title: req.body.title,
+    //     //     description: req.body.description,
+    //     //     attachment: req.file.path
+    //     // }).save()
+    //     //     .then(data => {
+    //     //         res.status(200).json({
+    //     //             "message": "new ticket created",
+    //     //             ticket: data
+    //     //         });
+    //     //     });
+    // });
 
 });
 

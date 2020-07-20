@@ -27,9 +27,7 @@ mongoose.connection.once('open', () =>{
 // CROSS ORIGIN RESOURCE SHARING 
 app.use((req, res, next) =>{
   res.header('Access-Control-Allow-Origin', '*'); // the * allows all site to access the
-  res.header(
-      'Access-Control-Allow-Headers', 
-      'Origin X-Requested-With, Content-Type, Accept, Authorization'
+  res.header('Access-Control-Allow-Headers', 'Origin X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token'
   );
   if(req.method === 'OPTIONS'){
       res.header('Access-Control-Allow-Methods', 'PUT, POST, PATHCH, DELETE, GET');
@@ -39,12 +37,21 @@ app.use((req, res, next) =>{
 });
 
 
+app.all('*', function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if ('OPTIONS' == req.method) {
+  res.sendStatus(200);
+  } else {
+    next();
+  }
+});
+
 
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './uploads')
-  },
+  destination: './uploads',
   filename: (req, file, cb) => {
     cb(null, file.originalname)
   }
@@ -61,8 +68,6 @@ app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
 });
 
 
-
-
 // middlewares
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: false}));
@@ -74,6 +79,7 @@ app.use(__dirname + '/uploads', express.static('uploads'));
 // routes
 app.use('/user' ,  UserRoutes );
 app.use('/app', TicketRoutes);
+
 
 
 
