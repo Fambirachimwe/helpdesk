@@ -12,7 +12,7 @@ const TicketSchema = new Schema({
     tags: [String],
     title: String,
     description: String,
-    // attachment: {type: String, required: true},
+    attachment: {type: String},
     elevatedTo: {type: mongoose.Schema.Types.ObjectId, required:false}
 });
 
