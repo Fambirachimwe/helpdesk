@@ -19,7 +19,14 @@ const storage = multer.diskStorage({
         console.log(file)
         cb(null, file.originalname)
     }
-})
+});
+
+
+const upload = multer({
+    storage: storage,
+    limits: {fileSize: 1024 * 1024* 1024}
+});
+
 
 //  this is the comment or the live server extesion 
 
@@ -61,16 +68,19 @@ router.get('/tickets/:id', CheckAuth, (req, res, next) => {
 });
 
 
+
 // user create ticket
-router.post('/tickets', CheckAuth, (req, res, next) => {
+router.post('/tickets', CheckAuth, upload.single("attachment") , (req, res, next) => {
     // console.log(req.body)
 
     const {title, description} = req.body;
+    const attachment = req.file;
     const usetId = req.user.id;
     const newTicket = new Ticket({
         user: usetId,
         title: title,
-        description: description
+        description: description,
+        attachment: attachment.path
     }).save()
     .then(data => {
         res.status(200).json({

@@ -12,6 +12,13 @@ const UserRoutes = require('./routes/user');
 const TicketRoutes = require('./routes/ticket');
 
 
+// middlewares
+app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
+
+
+
 
 //mongoose connection string here 
 mongoose.connect(process.env.MONGODB_CONNECTION, {  useCreateIndex: true,useNewUrlParser: true, useUnifiedTopology: true });
@@ -72,10 +79,6 @@ app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
 });
 
 
-// middlewares
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 
 app.use(__dirname + '/uploads', express.static('uploads'));
 
