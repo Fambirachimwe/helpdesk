@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // const CheckAuth = require('./middleware/checkAuth');
 
@@ -32,28 +33,10 @@ mongoose.connection.once('open', () =>{
 
 // HANDLING CORS ERRORS
 // CROSS ORIGIN RESOURCE SHARING 
-app.use((req, res, next) =>{
-  res.header('Access-Control-Allow-Origin', '*'); // the * allows all site to access the
-  res.header('Access-Control-Allow-Headers', 'Origin X-Requested-With, Content-Type, Accept, Authorization, X-Auth-Token'
-  );
-  if(req.method === 'OPTIONS'){
-      res.header('Access-Control-Allow-Methods', 'PUT, POST, PATHCH, DELETE, GET');
-      return res.status(200).json({});
-  }
-  next();
-});
+
+app.use(cors());
 
 
-app.all('*', function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  if ('OPTIONS' == req.method) {
-  res.sendStatus(200);
-  } else {
-    next();
-  }
-});
 
 
 
@@ -76,7 +59,7 @@ app.post('/api/photo', upload.single('attachment'), (req, res, next) => {
 
 
 
-app.use(__dirname + '/uploads', express.static('uploads'));
+app.use('/uploads', express.static('uploads'));
 
 
 // routes
