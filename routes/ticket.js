@@ -71,8 +71,6 @@ router.get('/tickets/:id', CheckAuth, (req, res, next) => {
 
 // user create ticket
 router.post('/tickets', CheckAuth, upload.single("attachment") , (req, res, next) => {
-    // console.log(req.body)
-
     const {title, description} = req.body;
     const attachment = req.file;
     const usetId = req.user.id;
@@ -87,36 +85,25 @@ router.post('/tickets', CheckAuth, upload.single("attachment") , (req, res, next
             data
         })
     })
-
-    // console.log(req.file);
-    // const upload = multer({ storage: storage }).single('attachment');
-    // upload(req, res, function (err) {
-    //     console.log(req.file);
-    //     // if (err) {
-    //     //     console.log(res.send(err))
-    //     // }
-
-    //     // const userId = req.user.id;
-    //     // const newTicket = new Ticket({
-    //     //     user: userId,
-    //     //     dateCreated: req.body.dateCreated,
-    //     //     // status
-    //     //     // priority
-    //     //     // tags
-    //     //     title: req.body.title,
-    //     //     description: req.body.description,
-    //     //     attachment: req.file.path
-    //     // }).save()
-    //     //     .then(data => {
-    //     //         res.status(200).json({
-    //     //             "message": "new ticket created",
-    //     //             ticket: data
-    //     //         });
-    //     //     });
-    // });
-
 });
 
+
+// get all tickets by userId
+
+router.get('/mytickets', CheckAuth, (req, res, next) => {
+    const userId = req.user.id;
+    Ticket.find({user: userId}).then(data => {
+        if (data.length > 0) {
+            res.status(200).json({
+                tickets: data // returning the all tickets onject
+            });
+        } else {
+            res.status(200).json({
+                "message": "No tickets Available"
+            })
+        }
+    })
+})
 
 module.exports = router
 
