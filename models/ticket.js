@@ -13,7 +13,8 @@ const TicketSchema = new Schema({
     title: String,
     description: String,
     attachment: {type: String},
-    elevatedTo: {type: mongoose.Schema.Types.ObjectId, required:false}
+    elevatedTo: {type: mongoose.Schema.Types.ObjectId, required:false},
+    
 });
 
 
