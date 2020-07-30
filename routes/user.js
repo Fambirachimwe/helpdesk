@@ -59,12 +59,13 @@ router.post('/login' ,(req, res, next) => {
                     const token = jwt.sign({username: user[0].username, id: user[0]._id},
                         process.env.JWT_SECRET   
                     );
-                    // console.log(req.headers); ///
+                    console.log(user);
 
                     return res.status(200).json({
                         message: "loggedIn",
                         role: user[0].role,
-                        token,  // sending the token to the frontend 
+                        user: user[0],
+                        token 
                     });
                 } else {
                     return res.status(401).json({
