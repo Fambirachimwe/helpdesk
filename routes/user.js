@@ -60,6 +60,7 @@ router.post('/login' ,(req, res, next) => {
                         process.env.JWT_SECRET   
                     );
                     console.log(user);
+                    // console.log(JSON.parse(atob(token.split('.')[1])));  // login the decoded token
 
                     return res.status(200).json({
                         message: "loggedIn",
@@ -82,6 +83,17 @@ router.post('/login' ,(req, res, next) => {
 
 
 });
+
+//  verify the token from frontend 
+
+router.post("/verify", (req, res, next) => {
+    const id =  req.body.id;
+    User.find({_id: id}).then(data => {
+        res.status(200).json({
+            user: data
+        })
+    })
+})
 
 
 // testing auth middleware
