@@ -15,6 +15,14 @@ const CheckAuth = require('../middleware/checkAuth');
 // login
 // 
 
+router.get('/users', (req, res, next) => {
+    User.find().then(data => {
+        res.status(200).json({
+            users: data
+        })
+    })
+});
+
 router.post('/signup', (req, res, next) => {
     const {username, email, password} = req.body;
 

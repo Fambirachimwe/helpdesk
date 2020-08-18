@@ -7,6 +7,8 @@ const multer = require('multer');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+
+
 // const CheckAuth = require('./middleware/checkAuth');
 
 const UserRoutes = require('./routes/user');
