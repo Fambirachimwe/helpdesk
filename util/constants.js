@@ -1,0 +1,14 @@
+exports.STATUS = {
+    PENDING: "PENDING",
+    CLOSED:'CLOSED',
+    ELEVATED: "ELEVATED",
+    UNRESOLVED: "UNRESOLVED",
+    OPENED:"OPENED"
+}
+
+
+exports.PRIORITY = {
+    HIGH: "HIGH",
+    LOW: "LOW",
+    CRITICAL: "CRITICAL"
+}
