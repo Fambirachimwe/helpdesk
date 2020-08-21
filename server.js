@@ -13,7 +13,7 @@ io.on("connect", (socket) => {
         socket.emit("test",'new User connected to the server');
 
         socket.on('update', (token) => {
-            console.log(token)
+            // console.log(token)
             const config = {
                 headers: {
                   "X-Auth-Token": token
@@ -21,8 +21,13 @@ io.on("connect", (socket) => {
             }
             
             axios.get("http://127.0.0.1:4000/app/tickets", config).then(data => {
-                io.emit('update_confirm', data.data.tickets )
-                // console.log("from server.js",data.data.tickets)                
+                io.emit('update_confirm', data.data.tickets );
+
+                // emmit event to change the mytickets table
+
+                io.emit("update_mytickets_table");
+
+                                
             });
         })
     }
