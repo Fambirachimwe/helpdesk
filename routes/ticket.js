@@ -111,11 +111,25 @@ router.get('/mytickets', CheckAuth, (req, res, next) => {
 // update ticket status 
 router.put("/tickets", (req, res, next) => {
     const id = req.body.id;
+    // const status = req.body.status;
     Ticket.findByIdAndUpdate({_id: id }, {status: STATUS.OPENED}, {returnOriginal: false}).then(data => {
         res.status(200).json({
             data
         })
     })
+});
+
+
+// change the overal status of the ticket in the admin detail page
+router.put('/ticket', (req, res, next) => {
+    const {id, status} = req.body;
+
+    Ticket.findByIdAndUpdate({_id: id }, {status: status}, {returnOriginal: false}).then(data => {
+        res.status(200).json({
+            data
+        })
+    })
+
 })
 
 
